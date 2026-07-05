@@ -1,0 +1,85 @@
+@baseUrl = http://localhost:5080
+@token = PASTE_JWT_HERE
+
+### Register a customer
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{
+  "fullName": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "P@ssword123"
+}
+
+### Login
+POST {{baseUrl}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "jane@example.com",
+  "password": "P@ssword123"
+}
+
+### Browse books (public)
+GET {{baseUrl}}/api/books?page=1&pageSize=10&search=tolkien&sortBy=-price
+
+### Filter books by category/author/price range
+GET {{baseUrl}}/api/books?categoryId=1&authorId=2&minPrice=5&maxPrice=50
+
+### Get single book
+GET {{baseUrl}}/api/books/1
+
+### Create an author (admin)
+POST {{baseUrl}}/api/authors
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "J.R.R. Tolkien",
+  "bio": "English writer and philologist."
+}
+
+### Create a category (admin)
+POST {{baseUrl}}/api/categories
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "name": "Fantasy",
+  "description": "Fantasy fiction"
+}
+
+### Create a book (admin)
+POST {{baseUrl}}/api/books
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "title": "The Hobbit",
+  "description": "A fantasy novel",
+  "isbn": "9780547928227",
+  "price": 14.99,
+  "stockQuantity": 25,
+  "publishedDate": "1937-09-21",
+  "authorId": 1,
+  "categoryId": 1
+}
+
+### Place an order (authenticated customer)
+POST {{baseUrl}}/api/orders
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "items": [
+    { "bookId": 1, "quantity": 2 }
+  ]
+}
+
+### View my own orders
+GET {{baseUrl}}/api/orders/mine
+Authorization: Bearer {{token}}
+
+### Admin: view all orders
+GET {{baseUrl}}/api/orders?page=1&pageSize=20
+Authorization: Bearer {{token}}

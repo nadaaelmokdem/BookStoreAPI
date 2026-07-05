@@ -1,0 +1,161 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>BookStoreApi</name>
+    </assembly>
+    <members>
+        <member name="T:BookStoreApi.Controllers.AuthController">
+            <summary>Registration and login.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.AuthController.Register(BookStoreApi.Dtos.Auth.RegisterRequestDto)">
+            <summary>Register a new customer account.</summary>
+            <response code="201">Account created; returns a JWT.</response>
+            <response code="400">Validation failed.</response>
+            <response code="409">Email already registered.</response>
+        </member>
+        <member name="M:BookStoreApi.Controllers.AuthController.Login(BookStoreApi.Dtos.Auth.LoginRequestDto)">
+            <summary>Log in with email and password.</summary>
+            <response code="200">Login succeeded; returns a JWT.</response>
+            <response code="401">Invalid credentials.</response>
+        </member>
+        <member name="T:BookStoreApi.Controllers.AuthorsController">
+            <summary>Manage book authors.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.AuthorsController.GetAll">
+            <summary>List all authors.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.AuthorsController.GetById(System.Int32)">
+            <summary>Get a single author.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.AuthorsController.Create(BookStoreApi.Dtos.Authors.CreateAuthorDto)">
+            <summary>Create an author. Admin only.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.AuthorsController.Update(System.Int32,BookStoreApi.Dtos.Authors.UpdateAuthorDto)">
+            <summary>Update an author. Admin only.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.AuthorsController.Delete(System.Int32)">
+            <summary>Delete an author. Admin only.</summary>
+        </member>
+        <member name="T:BookStoreApi.Controllers.BooksController">
+            <summary>Browse, search, and (for admins) manage books.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.BooksController.GetBooks(BookStoreApi.Dtos.Books.BookQueryParameters)">
+            <summary>Browse books with optional search, filtering, sorting, and pagination.</summary>
+            <remarks>
+            Query parameters: page, pageSize, search, categoryId, authorId, minPrice, maxPrice, sortBy
+            (sortBy accepts "title", "price", "publishedDate"; prefix with "-" for descending, e.g. "-price").
+            </remarks>
+        </member>
+        <member name="M:BookStoreApi.Controllers.BooksController.GetById(System.Int32)">
+            <summary>Get a single book's details.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.BooksController.Create(BookStoreApi.Dtos.Books.CreateBookDto)">
+            <summary>Create a new book. Admin only.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.BooksController.Update(System.Int32,BookStoreApi.Dtos.Books.UpdateBookDto)">
+            <summary>Update an existing book. Admin only.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.BooksController.Delete(System.Int32)">
+            <summary>Delete a book. Admin only.</summary>
+        </member>
+        <member name="T:BookStoreApi.Controllers.CategoriesController">
+            <summary>Manage book categories.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.CategoriesController.GetAll">
+            <summary>List all categories.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.CategoriesController.GetById(System.Int32)">
+            <summary>Get a single category.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.CategoriesController.Create(BookStoreApi.Dtos.Categories.CreateCategoryDto)">
+            <summary>Create a category. Admin only.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.CategoriesController.Update(System.Int32,BookStoreApi.Dtos.Categories.UpdateCategoryDto)">
+            <summary>Update a category. Admin only.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.CategoriesController.Delete(System.Int32)">
+            <summary>Delete a category. Admin only.</summary>
+        </member>
+        <member name="T:BookStoreApi.Controllers.OrdersController">
+            <summary>Place orders and view order history.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.OrdersController.Create(BookStoreApi.Dtos.Orders.CreateOrderDto)">
+            <summary>Place a new order containing one or more books. Requires authentication.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.OrdersController.GetMyOrders">
+            <summary>Get the current customer's own past orders.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.OrdersController.GetById(System.Int32)">
+            <summary>Get a specific order. Customers may only view their own; admins may view any.</summary>
+        </member>
+        <member name="M:BookStoreApi.Controllers.OrdersController.GetAll(System.Int32,System.Int32)">
+            <summary>Get every order placed by every customer. Admin only.</summary>
+        </member>
+        <member name="T:BookStoreApi.Dtos.Books.BookQueryParameters">
+            <summary>
+            Query-string bound parameters for GET /api/books (browsing, searching, filtering, pagination).
+            </summary>
+        </member>
+        <member name="P:BookStoreApi.Dtos.Books.BookQueryParameters.Search">
+            <summary>Free-text search across title and description.</summary>
+        </member>
+        <member name="P:BookStoreApi.Dtos.Books.BookQueryParameters.SortBy">
+            <summary>One of: title, price, publisheddate (prefix with "-" for descending, e.g. "-price").</summary>
+        </member>
+        <member name="T:BookStoreApi.Dtos.Common.ApiErrorResponse">
+            <summary>
+            Structured error response returned for every non-2xx result.
+            </summary>
+        </member>
+        <member name="P:BookStoreApi.Dtos.Common.ApiErrorResponse.Errors">
+            <summary>Field-level validation errors, if any (field name -> list of messages).</summary>
+        </member>
+        <member name="P:BookStoreApi.Dtos.Orders.OrderDto.CustomerEmail">
+            <summary>Populated for admins viewing all orders; the owner's own listing can ignore it.</summary>
+        </member>
+        <member name="T:BookStoreApi.Exceptions.BadRequestException">
+            <summary>Thrown for business-rule violations that are the client's fault. Mapped to HTTP 400.</summary>
+        </member>
+        <member name="T:BookStoreApi.Exceptions.ConflictException">
+            <summary>Thrown when a request conflicts with existing state (e.g. duplicate email). Mapped to HTTP 409.</summary>
+        </member>
+        <member name="T:BookStoreApi.Exceptions.ForbiddenException">
+            <summary>Thrown when an authenticated user tries to access a resource they don't own. Mapped to HTTP 403.</summary>
+        </member>
+        <member name="T:BookStoreApi.Exceptions.NotFoundException">
+            <summary>Thrown when a requested entity does not exist. Mapped to HTTP 404.</summary>
+        </member>
+        <member name="T:BookStoreApi.Exceptions.UnauthorizedException">
+            <summary>Thrown for authentication failures (e.g. bad credentials). Mapped to HTTP 401.</summary>
+        </member>
+        <member name="T:BookStoreApi.Exceptions.ValidationAppException">
+            <summary>Thrown for manual/service-level validation failures. Mapped to HTTP 400 with field errors.</summary>
+        </member>
+        <member name="M:BookStoreApi.Extensions.ServiceCollectionExtensions.AddConsistentModelValidationResponses(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Makes built-in [ApiController] model-binding validation errors (e.g. malformed JSON,
+            missing required route/body values) come back in the same ApiErrorResponse shape as
+            every other error in the API.
+            </summary>
+        </member>
+        <member name="T:BookStoreApi.Middleware.ExceptionHandlingMiddleware">
+            <summary>
+            Catches every unhandled exception in the pipeline and converts it into a clean,
+            structured JSON response. Guarantees the API never leaks stack traces or internal
+            exception details to the client.
+            </summary>
+        </member>
+        <member name="T:BookStoreApi.Migrations.InitialCreate">
+            <inheritdoc />
+        </member>
+        <member name="M:BookStoreApi.Migrations.InitialCreate.Up(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:BookStoreApi.Migrations.InitialCreate.Down(Microsoft.EntityFrameworkCore.Migrations.MigrationBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:BookStoreApi.Migrations.InitialCreate.BuildTargetModel(Microsoft.EntityFrameworkCore.ModelBuilder)">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>
